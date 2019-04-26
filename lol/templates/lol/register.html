@@ -1,0 +1,59 @@
+{% load crispy_forms_tags %} 
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #44B78B;">
+    <a class="navbar-brand" href="#">Peri</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/lol/">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+      </ul>
+      
+      <br>
+      {% if session %}
+      <form class="form-inline" action="/lol/logout">
+      	<p style="margin-right: 10">{{ session }}</p>
+    	<input class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="Logout" />
+	  </form>
+
+	  {% else %}
+      <form class="form-inline" action="/lol/login">
+    	<input class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="Login" />
+	  </form>
+	  {% endif %}
+    </div>
+  </nav>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p><br>{% endif %}
+<br>
+<center>
+<h1>Register view</h1>
+
+
+
+<form action="/lol/register/" method="post" class="form">
+<div class="form-group">
+{% csrf_token %}
+{% block content %}
+	{% crispy form %}
+{% endblock %}
+<br>
+<input type="submit" value="Register">
+</div>
+</form>

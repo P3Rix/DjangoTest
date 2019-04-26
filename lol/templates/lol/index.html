@@ -1,0 +1,120 @@
+{% load crispy_forms_tags %} 
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #44B78B;">
+    <a class="navbar-brand" href="#">Peri</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/lol/">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+      </ul>
+      
+      <br>
+      {% if session %}
+      <form class="form-inline" action="/lol/logout">
+      	<p style="margin-right: 10">{{ session }}</p>
+    	<input class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="Logout" />
+	  </form>
+
+	  <form class="form-inline" style="margin-left: 10" action="/lol/profile">
+    	<input class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="Profile" />
+	  </form>
+
+	  {% else %}
+      <form class="form-inline" action="/lol/login">
+    	<input class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="Login" />
+	  </form>
+
+	  <form class="form-inline" style="margin-left: 10" action="/lol/register">
+    	<input class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="Register" />
+	  </form>
+
+
+	  {% endif %}
+
+    {% if admin %}
+    <form class="form-inline" style="margin-left: 10" action="/lol/registergame">
+      <input class="btn btn-outline-primary my-2 my-sm-0" type="submit" value="New game" />
+    </form>
+    {% endif %}
+    </div>
+  </nav>
+
+
+</div>
+  <br>
+<div class="container">
+<div class="row">
+
+{% if latest_games_list %}
+    {% for game in latest_games_list %} 
+            {% if forloop.counter|divisibleby:5 %}
+          </div>
+            <br>
+            <div class="row" >
+                <div class = "col">
+                  <div class="card" style="width: 15rem;">
+                  <img height="180px" class="card-img-top" src=/media/{{game.pic}} alt="Card image cap">
+                  <div class="card-block">
+                  <h4 class="card-title">{{game.name}}</h4>
+                  <p class="card-text">{{game.pub_date}}</p>
+                  <a href="lol/{{game.id}}" data-name="Lemon" data-price="5" class="add-to-cart btn btn-primary">More info</a>
+                  </div>
+                  </div>
+                </div>
+
+            {% else %}
+              <div class = "col">
+           <div class="card" style="width: 15rem;">
+            <img height="180px" class="card-img-top" src="/media/{{game.pic}}" alt="Card image cap">
+            <div class="card-block">
+            <h4 class="card-title">{{game.name}}</h4>
+            <p class="card-text">{{game.pub_date}}</p>
+            <a href="{{game.id}}" data-name="Lemon" data-price="5" class="add-to-cart btn btn-primary">More info</a>
+              </div>
+            </div>
+            </div>
+
+            {% endif %}
+    {% endfor %}
+  </div>
+
+
+  <div class="pagination">
+    <span class="step-links">
+        {% if latest_games_list.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ latest_games_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ latest_games_list.number }} of {{ latest_games_list.paginator.num_pages }}.
+        </span>
+
+        {% if latest_games_list.has_next %}
+            <a href="?page={{ latest_games_list.next_page_number }}">next</a>
+            <a href="?page={{ latest_games_list.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% else %}
+    <p>No register games.</p>
+{% endif %}
+</div>
